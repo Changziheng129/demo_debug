@@ -40,20 +40,22 @@ pipeline {
     agent any
 
     stages {
-        stage('诊断环境') {
+        stage('检出信息') {
             steps {
-                sh '''
-                    echo "=== 系统信息 ==="
-                    cat /etc/os-release | head -3
-                    echo "=== 查找 python ==="
-                    ls /usr/bin/ | grep -i python || echo "无 python"
-                    which python python3 python2 2>/dev/null || echo "python 都不在 PATH"
-                    echo "=== 可用工具 ==="
-                    which git curl wget sh bash java node npm 2>/dev/null
-                    echo "=== 包管理器 ==="
-                    which apt apt-get yum apk 2>/dev/null
-                '''
+                echo "分支: ${env.GIT_BRANCH}"
+                echo "提交: ${env.GIT_COMMIT}"
             }
         }
+
+        stage('读取文件') {
+            steps {
+                sh 'cat demo.py'
+            }
+        }
+    }
+
+    post {
+        success { echo '构建成功' }
+        failure { echo '构建失败' }
     }
 }
