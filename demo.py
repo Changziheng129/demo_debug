@@ -1,2 +1,2 @@
 print('test_print  SUCCESS')
-print('modify')
+print('modify -14.40 -8')
